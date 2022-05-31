@@ -144,9 +144,9 @@ data:
   grafana.dashboard.name: infinispan
   grafana.dashboard.namespace: infinispan
 ``` 
-***monitorin.key: es la clave de supervision***
-***dashborad.name: es el nombre del grafana dashboard de nuestro operador***
-***dashboard.namespace: es el nombre de nuestro name donde se encuentra nuestro cache***
+> ***monitorin.key: es la clave de supervision***
+> ***dashborad.name: es el nombre del grafana dashboard de nuestro operador***
+> ***dashboard.namespace: es el nombre de nuestro name donde se encuentra nuestro cache***
 
 2. creamos o actualizamos el *infinispan-operator-config* 
 ```bash
