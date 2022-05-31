@@ -35,7 +35,7 @@ metadata:
 5. Ingresar a Openshift web console y como administrador, nos dirigimos a nuestro panel, abrimos la pestaña *observe/metrics* confirmando que podemos buscar la siguiente metrica
 
 ```bash
-*proveedor_cache_manager_default_clustersiz*
+vendor_cache_manager_default_cluster_size
 ```
 ### 2. Habilitacion se user-defined projects 
 
@@ -57,7 +57,7 @@ data:
 ### 3. Habilitacion de monitoreo con grafana 
 
 1. Ingresar a Openshift web console y como administrador, nos dirigimos a *installed operators/grafana*
-> dentro del operador grafana creamos un grafana CR en la seccion suoperior llamada "grafana"
+> Dentro del operador grafana creamos un grafana CR en la seccion suoperior llamada "grafana"
 ```bash
 apiVersion: integreatly.org/v1alpha1
 kind: Grafana
