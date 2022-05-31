@@ -1,13 +1,13 @@
-# Habilitación de Operador grafana monitoreo de caches
+# Habilitación de Operador grafana para monitoreo de caches
 
-## Despliegue del Operator
+## Despliegue del Operador
 
 ### Pre-requisitos
 
 1. Poseer un client OC 
 2. Acceso a openshift con usuario con rol cluster-admin
-3. Namespace monitoring-infinispam creado
-4. Operador Grafana version alpha v4.4.1 habilitado en namespace monitoring-infinispam (namespace donde se administrara el monitoreo)
+3. Namespace monitoring-infinispan creado
+4. Operador Grafana version alpha v4.4.1 habilitado en namespace monitoring-infinispan (namespace donde se administrara el monitoreo)
 
 ### 1. Habilitacion de monitoreo en clusteres de caches
 
@@ -19,11 +19,11 @@ oc login
 ```bash
 oc project monitoring-data-grid
 ```
-3. crear un service monitor llamado service-monitor-infinispan
+3. Crear un service monitor llamado service-monitor-infinispan
 ```bash
 $ oc apply -f  service-monitor-infinispan.yaml
 ```
-4. Añadir anotacion al a los cluster infinispan CR *infinispan.org/monitoring* en *true* como se muestra a continuacion
+4. Añadir anotacion al a los cluster Infinispan CR *infinispan.org/monitoring* en *true* como se muestra a continuacion
 ```bash
 apiVersion: infinispan.org/v1
 kind: Infinispan
@@ -32,12 +32,12 @@ metadata:
   annotations:
     **infinispan.org/monitoring: 'true'**
 ```
-5. Ingresar a Openshift web console y como administrador, nos dirigimos a nuestro panel, abrimos la pestaña *observe/metrics* confirmando que podemos buscar la siguiente metrica
+5. Ingresar a Openshift web console y como administrador, nos dirigimos a nuestro panel, abrimos la pestaña *observe/metrics* confirmando que podemos buscar la siguiente métrica
 
 ```bash
 vendor_cache_manager_default_cluster_size
 ```
-### 2. Habilitacion se user-defined projects 
+### 2. Habilitación de user-defined projects 
 
 1. Editamos el *ConfigMap*  llamado cluster-monitoring-config
 ```bash
@@ -54,10 +54,10 @@ data:
   config.yaml: |
     **enableUserWorkload: true**
 ```
-### 3. Habilitacion de monitoreo con grafana 
+### 3. Habilitación de monitoreo con Grafana 
 
 1. Ingresar a Openshift web console y como administrador, nos dirigimos a *installed operators/grafana*
-> Dentro del operador grafana creamos un grafana CR en la seccion suoperior llamada "grafana"
+> Dentro del operador Grafana creamos un Grafana CR (Custom Resource) en la sección superior llamada "grafana"
 ```bash
 apiVersion: integreatly.org/v1alpha1
 kind: Grafana
@@ -84,7 +84,7 @@ spec:
   ingress:
     enabled: true
 ``` 
-2. Creaamos un serviceAccount para permitir a grafana leer metricas de data grid
+2. Creaamos un serviceAccount para permitir a Grafana leer metricas de data grid
 ```bash
 apiVersion: v1
 kind: ServiceAccount
@@ -99,12 +99,12 @@ oc apply -f service-account.yaml
 ```bash
 oc adm policy add-cluster-role-to-user cluster-monitoring-view -z infinispan-monitoring
 ``` 
-3. Creamos una fuente de datos de grafana 
+3. Creamos una fuente de datos de Grafana 
 > 1. Obtenemos un token para el ServiceAccount
 ```bash
 oc serviceaccounts get-token infinispan-monitoring
 ```
-> 2. definimos un data source de tipo grafana incluyeendo el token obtenido anteriormente y lo ingresamos en el archivo a escala de *spec.datasources.secureJsonData.httpHeaderValue1*
+> 2. Definimos un data source de tipo Grafana incluyendo el token obtenido anteriormente y lo ingresamos en el archivo a escala de *spec.datasources.secureJsonData.httpHeaderValue1*
 ```bash
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
@@ -128,12 +128,12 @@ spec:
       type: prometheus
       url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
 ```
->3. aplicamos el source 
+>3. Aplicamos el source 
 ```bash
 oc apply -f grafana-datasource.yaml
 ```
-### 4. Configuracion de paneles 
-1. creamos un ConfigMap llamado *infinispan-operator-config* en el operador donde se encuentra nuestros caches 
+### 4. Configuración de paneles 
+1. Creamos un ConfigMap llamado *infinispan-operator-config* en el operador donde se encuentra nuestros caches 
 ```bash
 apiVersion: v1
 kind: ConfigMap
@@ -152,11 +152,11 @@ data:
 
 ***dashboard.namespace: es el nombre de nuestro name donde se encuentra nuestro cache***
 
-2. creamos o actualizamos el *infinispan-operator-config* 
+2. Creamos o actualizamos el *infinispan-operator-config* 
 ```bash
 oc apply -f infinispan-operator-config.yaml
 ```   
-3. obtenemos la ruta url donde se encuentra nuestro Grafana disponible
+3. Obtenemos la ruta url donde se encuentra nuestro Grafana disponible
 ```bash
 oc obtener rutas grafana-ruta -o jsonpath=https://"{.spec.host}"
 ```  
